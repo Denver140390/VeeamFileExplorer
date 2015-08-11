@@ -1,4 +1,7 @@
-﻿* About code
+﻿* About program
+Framework version: 4.5.2
+
+* About code
 In this File Explorer I tried to follow the MVVM principles of separating business logic (Models) from UI (Views) by connecting them with bridges (ViewModels). Pretty usual.
 
 There are two main Models in the application: Files and Folders. Both inherit from FileModelBase class, which implements INotifyPropertyChanged interface.
