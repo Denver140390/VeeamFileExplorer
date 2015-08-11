@@ -49,9 +49,14 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="ViewModels\CurrentDirectoryViewModel.cs" />
+    <Compile Include="ViewModels\FoldersTreeViewModel.cs" />
     <Compile Include="Views\CurrentDirectoryView.xaml.cs">
       <DependentUpon>CurrentDirectoryView.xaml</DependentUpon>
     </Compile>
+    <Page Include="Views\FoldersTreeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\MainView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -59,6 +64,9 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Views\FoldersTreeView.xaml.cs">
+      <DependentUpon>FoldersTreeView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>

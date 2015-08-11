@@ -6,6 +6,7 @@
         <viewModels:CurrentDirectoryViewModel/>
     </UserControl.DataContext>
     
-    <DataGrid ItemsSource="{Binding Files}"/>
+    <DataGrid ItemsSource="{Binding Files}" />
+<!--    <TreeView ItemsSource="{Binding Files}"/>-->
     
 </UserControl>

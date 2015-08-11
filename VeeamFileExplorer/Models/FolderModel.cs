@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace VeeamFileExplorer.Models
+﻿namespace VeeamFileExplorer.Models
 {
     class FolderModel : FileModelBase
     {
