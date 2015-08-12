@@ -68,6 +68,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converters\HeaderToImageConverter.cs" />
     <Compile Include="ViewModels\DirectoryContentViewModel.cs" />
     <Compile Include="ViewModels\CurrentPathViewModel.cs" />
     <Compile Include="ViewModels\FoldersTreeViewModel.cs" />
@@ -137,7 +138,10 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Images\diskdrive.png" />
+    <Resource Include="Images\folder.png" />
+  </ItemGroup>
   <ItemGroup>
     <Resource Include="ReadMe.txt" />
   </ItemGroup>

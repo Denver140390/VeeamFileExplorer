@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.IO;
+using GalaSoft.MvvmLight.Messaging;
 using VeeamFileExplorer.Helpers;
 using VeeamFileExplorer.Models;
 
@@ -53,7 +54,8 @@ namespace VeeamFileExplorer.ViewModels
             {
                 var folder = new FolderModel
                 {
-                    Name = folderName
+                    Name = folderName.Substring(folderName.LastIndexOf("\\", StringComparison.Ordinal) + 1),
+                    Path = path
                 };
 
                 _currentDirectoryContent.Add(folder);
@@ -63,6 +65,12 @@ namespace VeeamFileExplorer.ViewModels
         public void SetCurrentPath(string path)
         {
             CurrentPathViewModel.Instance.Value = path;
+        }
+
+        public void SetSelectedFolder(string path)
+        {
+            //TODO Use own Messenger. 4 references for 1 feature is not cool. It feels wrong.
+            Messenger.Default.Send(path);
         }
     }
 }

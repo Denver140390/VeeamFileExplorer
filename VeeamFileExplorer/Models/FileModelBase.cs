@@ -33,5 +33,7 @@ namespace VeeamFileExplorer.Models
             get { return _size; }
             set { SetProperty(ref _size, value, () => Size); }
         }
+
+        //ToDo Extension and Icon properties
     }
 }

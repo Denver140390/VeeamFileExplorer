@@ -8,9 +8,11 @@ There are two main Models in the application: Files and Folders. Both inherit fr
 The idea here is to separate Files and Folders as different entities, while still providing something common between them (Path and Name) and leaving the possibility to add something else.
 Making easy things hard, yay!
 
-ViewModels are to decorate Models to make them bindable by Views. Having a collection of FileModelBase class instances seems to be a nice way to pass the data about Files and Folders to the Views. 
+ViewModels are to decorate Models to make them bindable by Views. Having a collection of FileModelBase class instances seems to be a nice way to pass the data about Files and Folders to the Views.
+Using MVVMLight Toolkit to pass data between ViewModels using Messenger system.
 
 Views are showing cool stuff and catching user inputs. Using code-behind tho, could not quite manage, how to implement the logic in XAML-only.
+Using View-First approach. ViewModel objects are being created in Views.
 
 * Possible improvements
 Interactive DirectoryContentView - open folders and files, copy, paste and other usual Windows Explorer features.

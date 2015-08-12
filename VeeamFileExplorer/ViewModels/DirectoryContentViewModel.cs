@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.IO;
+using GalaSoft.MvvmLight.Messaging;
 using VeeamFileExplorer.Helpers;
 using VeeamFileExplorer.Models;
 
@@ -20,52 +21,34 @@ namespace VeeamFileExplorer.ViewModels
         {
             _content = new ObservableCollection<FileModelBase>();
 
-            var folderModel = new FolderModel
-            {
-                Name="Folder",
-                Path ="/Folder",
-                ChangedDate = DateTime.Now,
-                Size = 123
-            };
-
-            _content.Add(folderModel);
-
-            var fileModel = new FileModel
-            {
-                Name = "File",
-                Path = "/File",
-                ChangedDate = DateTime.Now,
-                Size = 321
-            };
-
-            _content.Add(fileModel);
+            Messenger.Default.Register<string>(this, LoadDirectoryContent);
         }
 
         public void LoadDirectoryContent(string path)
         {
             _content.Clear();
 
-            foreach (var file in Directory.GetFiles(path))
+            foreach (var folder in Directory.GetDirectories(path))
             {
                 var folderModel = new FolderModel
                 {
-                    Name = file,
+                    Name = folder.Substring(folder.LastIndexOf("\\", StringComparison.Ordinal) + 1),
                     Path = path,
                     ChangedDate = File.GetLastWriteTime(path)
-                    //ToDo async folder size calculation
+                    //Size = (new FileInfo(file)).Length //ToDo async folder size calculation
                 };
 
                 _content.Add(folderModel);
             }
-
+            
             foreach (var file in Directory.GetFiles(path))
             {
                 var fileModel = new FileModel
                 {
-                    Name = file,
+                    Name = file.Substring(file.LastIndexOf("\\", StringComparison.Ordinal) + 1),
                     Path = path,
                     ChangedDate = File.GetLastWriteTime(path),
-                    Size = (new FileInfo(path)).Length //TODO (new FileInfo(path)).Length??? For real???
+                    Size = (new FileInfo(file)).Length
                 };
 
                 _content.Add(fileModel);

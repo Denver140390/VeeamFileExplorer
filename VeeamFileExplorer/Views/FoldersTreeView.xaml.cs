@@ -39,12 +39,13 @@ namespace VeeamFileExplorer.Views
         private void TreeViewItem_Expanded(object sender, RoutedEventArgs e)
         {
             var item = (TreeViewItem)sender;
+            if (!item.IsExpanded) return; // we want to perform only with expanded one
             var path = item.Tag.ToString();
             if (item.Items.Count != 1 || item.Items[0] != _dummyItem) return;
             item.Items.Clear();
 
             _foldersTreeViewModel.LoadDirectoryFolders(path);
-            _foldersTreeViewModel.SetCurrentPath(path); //TODO
+            _foldersTreeViewModel.SetCurrentPath(path); //TODO or not TODO?
 
             try
             {
@@ -53,7 +54,7 @@ namespace VeeamFileExplorer.Views
                     var subItem = new TreeViewItem
                     {
                         Header = directory.Name,
-                        Tag = directory.Path,
+                        Tag = string.Concat(directory.Path, @"\", directory.Name),
                         FontWeight = FontWeights.Normal
                     };
                     subItem.Items.Add(_dummyItem);
@@ -70,7 +71,11 @@ namespace VeeamFileExplorer.Views
 
         private void TreeViewItem_Selected(object sender, RoutedEventArgs routedEventArgs)
         {
-            throw new NotImplementedException();
+            var item = (TreeViewItem)sender;
+            if (!item.IsSelected) return; // we want to perform only with selected one
+
+            var path = item.Tag.ToString();
+            _foldersTreeViewModel.SetSelectedFolder(path);
         }
     }
 }
