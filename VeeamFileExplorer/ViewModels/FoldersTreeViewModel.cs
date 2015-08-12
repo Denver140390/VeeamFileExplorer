@@ -50,7 +50,6 @@ namespace VeeamFileExplorer.ViewModels
                 throw new Exception(e.Message);
             }
 
-            CurrentPathViewModel.Instance.Value = path;
             _currentDirectoryContent.Clear();
             foreach (string folderName in directories)
             {
@@ -63,6 +62,11 @@ namespace VeeamFileExplorer.ViewModels
 
                 _currentDirectoryContent.Add(folder);
             }
+        }
+
+        public void SetCurrentPath(string path)
+        {
+            CurrentPathViewModel.Instance.Value = path;
         }
     }
 }

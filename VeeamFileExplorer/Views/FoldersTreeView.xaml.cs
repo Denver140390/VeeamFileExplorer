@@ -37,10 +37,12 @@ namespace VeeamFileExplorer.Views
         private void TreeViewItem_Expanded(object sender, RoutedEventArgs e)
         {
             var item = (TreeViewItem)sender;
+            var path = item.Tag.ToString();
+            _foldersTreeViewModel.SetCurrentPath(path);
             if (item.Items.Count != 1 || item.Items[0] != _dummyItem) return;
             item.Items.Clear();
 
-            _foldersTreeViewModel.LoadDirectoryContent(item.Tag.ToString());
+            _foldersTreeViewModel.LoadDirectoryContent(path);
 
             try
             {
