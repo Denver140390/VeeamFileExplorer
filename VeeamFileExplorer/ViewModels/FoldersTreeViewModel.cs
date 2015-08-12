@@ -50,6 +50,7 @@ namespace VeeamFileExplorer.ViewModels
                 throw new Exception(e.Message);
             }
 
+            CurrentPathViewModel.Instance.Value = path;
             _currentDirectoryContent.Clear();
             foreach (string folderName in directories)
             {

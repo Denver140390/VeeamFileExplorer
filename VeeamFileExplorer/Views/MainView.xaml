@@ -4,11 +4,16 @@
         xmlns:views="clr-namespace:VeeamFileExplorer.Views"
         Title="Veeam File Explorer">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <views:FoldersTreeView Grid.Column="0"/>
-        <views:CurrentDirectoryView Grid.Column="1"/>
+        <views:CurrentPathView Grid.ColumnSpan="2"/>
+        <views:FoldersTreeView Grid.Row="1" Grid.Column="0"/>
+        <views:CurrentDirectoryView Grid.Row="1" Grid.Column="1"/>
     </Grid>
 </Window>

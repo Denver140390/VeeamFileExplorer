@@ -1,0 +1,11 @@
+﻿<UserControl x:Class="VeeamFileExplorer.Views.CurrentPathView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:viewModels="clr-namespace:VeeamFileExplorer.ViewModels">
+    
+    <UserControl.Resources>
+        <ObjectDataProvider x:Key="Singleton" ObjectType="{x:Type viewModels:CurrentPathViewModel}" MethodName="get_Instance"/>
+    </UserControl.Resources>
+    
+    <TextBox Text="{Binding Source={StaticResource Singleton}, Path=Value}"/>
+</UserControl>
