@@ -2,9 +2,9 @@
 
 namespace VeeamFileExplorer.Views
 {
-    public partial class CurrentDirectoryView : UserControl
+    public partial class DirectoryContentView : UserControl
     {
-        public CurrentDirectoryView()
+        public DirectoryContentView()
         {
             InitializeComponent();
         }

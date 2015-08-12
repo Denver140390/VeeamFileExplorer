@@ -30,6 +30,8 @@ namespace VeeamFileExplorer.Views
                 };
                 item.Items.Add(_dummyItem);
                 item.Expanded += TreeViewItem_Expanded;
+                item.Selected += TreeViewItem_Selected;
+                
                 ((TreeView)sender).Items.Add(item);
             }
         }
@@ -38,11 +40,11 @@ namespace VeeamFileExplorer.Views
         {
             var item = (TreeViewItem)sender;
             var path = item.Tag.ToString();
-            _foldersTreeViewModel.SetCurrentPath(path);
             if (item.Items.Count != 1 || item.Items[0] != _dummyItem) return;
             item.Items.Clear();
 
-            _foldersTreeViewModel.LoadDirectoryContent(path);
+            _foldersTreeViewModel.LoadDirectoryFolders(path);
+            _foldersTreeViewModel.SetCurrentPath(path); //TODO
 
             try
             {
@@ -56,6 +58,7 @@ namespace VeeamFileExplorer.Views
                     };
                     subItem.Items.Add(_dummyItem);
                     subItem.Expanded += TreeViewItem_Expanded;
+                    subItem.Selected += TreeViewItem_Selected;
                     item.Items.Add(subItem);
                 }
             }
@@ -63,6 +66,11 @@ namespace VeeamFileExplorer.Views
             {
                 throw new Exception(ex.Message);
             }
+        }
+
+        private void TreeViewItem_Selected(object sender, RoutedEventArgs routedEventArgs)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -8,7 +8,7 @@ namespace VeeamFileExplorer.Models
         private string _name;
         private string _path;
         private DateTime _changedDate;
-        private int _size;
+        private long _size;
 
         public string Name
         {
@@ -28,7 +28,7 @@ namespace VeeamFileExplorer.Models
             set { SetProperty(ref _changedDate, value, () => ChangedDate); }
         }
 
-        public int Size
+        public long Size
         {
             get { return _size; }
             set { SetProperty(ref _size, value, () => Size); }

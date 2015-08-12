@@ -48,11 +48,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="ViewModels\CurrentDirectoryViewModel.cs" />
+    <Compile Include="ViewModels\DirectoryContentViewModel.cs" />
     <Compile Include="ViewModels\CurrentPathViewModel.cs" />
     <Compile Include="ViewModels\FoldersTreeViewModel.cs" />
-    <Compile Include="Views\CurrentDirectoryView.xaml.cs">
-      <DependentUpon>CurrentDirectoryView.xaml</DependentUpon>
+    <Compile Include="Views\DirectoryContentView.xaml.cs">
+      <DependentUpon>DirectoryContentView.xaml</DependentUpon>
     </Compile>
     <Page Include="Views\CurrentPathView.xaml">
       <SubType>Designer</SubType>
@@ -80,7 +80,7 @@
       <DependentUpon>MainView.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Views\CurrentDirectoryView.xaml">
+    <Page Include="Views\DirectoryContentView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

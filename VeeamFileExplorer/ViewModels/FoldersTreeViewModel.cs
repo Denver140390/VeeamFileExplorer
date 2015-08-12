@@ -29,16 +29,14 @@ namespace VeeamFileExplorer.ViewModels
             {
                 var folder = new FolderModel
                 {
-                    Name = logicalDrive,
-                    Path = logicalDrive
-                    //ToDo async size calculation
+                    Name = logicalDrive
                 };
 
                 _currentDirectoryContent.Add(folder);
             }
         }
 
-        public void LoadDirectoryContent(string path)
+        public void LoadDirectoryFolders(string path)
         {
             string[] directories;
             try
@@ -55,9 +53,7 @@ namespace VeeamFileExplorer.ViewModels
             {
                 var folder = new FolderModel
                 {
-                    Name = folderName,
-                    Path = folderName
-                    //ToDo async size calculation
+                    Name = folderName
                 };
 
                 _currentDirectoryContent.Add(folder);

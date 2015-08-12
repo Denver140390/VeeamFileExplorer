@@ -1,12 +1,12 @@
-﻿<UserControl x:Class="VeeamFileExplorer.Views.CurrentDirectoryView"
+﻿<UserControl x:Class="VeeamFileExplorer.Views.DirectoryContentView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:viewModels="clr-namespace:VeeamFileExplorer.ViewModels">
     <UserControl.DataContext>
-        <viewModels:CurrentDirectoryViewModel/>
+        <viewModels:DirectoryContentViewModel/>
     </UserControl.DataContext>
     
-    <DataGrid ItemsSource="{Binding Files}" />
+    <DataGrid ItemsSource="{Binding Content}" />
 <!--    <TreeView ItemsSource="{Binding Files}"/>-->
     
 </UserControl>
