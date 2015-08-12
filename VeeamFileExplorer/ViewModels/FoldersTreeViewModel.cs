@@ -1,7 +1,6 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.IO;
-using System.Windows;
-using System.Windows.Controls;
 using VeeamFileExplorer.Helpers;
 using VeeamFileExplorer.Models;
 
@@ -9,38 +8,59 @@ namespace VeeamFileExplorer.ViewModels
 {
     class FoldersTreeViewModel : PropertyChangedBase
     {
-        private ObservableCollection<FolderModel> _directories;
+        private ObservableCollection<FolderModel> _currentDirectoryContent;
 
-        public ObservableCollection<FolderModel> Directories
+        public ObservableCollection<FolderModel> CurrentDirectoryContent
         {
-            get { return _directories; }
-            set { SetProperty(ref _directories, value, () => Directories); }
+            get { return _currentDirectoryContent; }
+            set { SetProperty(ref _currentDirectoryContent, value, () => CurrentDirectoryContent); }
         }
 
         public FoldersTreeViewModel()
         {
-            _directories = new ObservableCollection<FolderModel>();
+            _currentDirectoryContent = new ObservableCollection<FolderModel>();
 
             LoadLogicalDrives();
         }
 
         public void LoadLogicalDrives()
         {
-            _directories.Add(new FolderModel
-            {
-                Name = "1",
-                Path = "1"
-            });
-
-            foreach (var logicalDrive in Directory.GetLogicalDrives())
+            foreach (string logicalDrive in Directory.GetLogicalDrives())
             {
                 var folder = new FolderModel
                 {
                     Name = logicalDrive,
                     Path = logicalDrive
+                    //ToDo async size calculation
                 };
 
-                _directories.Add(folder);
+                _currentDirectoryContent.Add(folder);
+            }
+        }
+
+        public void LoadDirectoryContent(string path)
+        {
+            string[] directories;
+            try
+            {
+                directories = Directory.GetDirectories(path);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+
+            _currentDirectoryContent.Clear();
+            foreach (string folderName in directories)
+            {
+                var folder = new FolderModel
+                {
+                    Name = folderName,
+                    Path = folderName
+                    //ToDo async size calculation
+                };
+
+                _currentDirectoryContent.Add(folder);
             }
         }
     }

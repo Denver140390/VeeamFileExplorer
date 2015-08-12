@@ -10,4 +10,4 @@ Making easy things hard, yay!
 
 ViewModels are to decorate Models to make them bindable by Views. Having a collection of FileModelBase class instances seems to be a nice way to pass the data about Files and Folders to the Views. 
 
-Views are showing cool stuff and catching user inputs.
+Views are showing cool stuff and catching user inputs. Using code-behind tho, could not quite manage, how to implement the logic in XAML-only.

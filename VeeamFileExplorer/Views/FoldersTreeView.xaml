@@ -19,7 +19,7 @@
 <!--        </TreeView.ItemTemplate>-->
 <!--    </TreeView>-->
     
-    <TreeView Loaded="TreeView_OnLoaded"/>
+    <TreeView Loaded="TreeView_OnLoaded" />
 
 <!--    <TreeView ItemsSource="{Binding Directories}">-->
 <!--        <TreeView.ItemContainerStyle>-->
