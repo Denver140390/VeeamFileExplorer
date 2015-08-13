@@ -20,4 +20,6 @@ Address Bar - show current directory path, allow input.
 Multiple ContentViews - for comparison.
 Navigation Buttons - backward and forward actions.
 Asynchronous Loading - load as much info as possible asynchronously. Without affecting too much RAM tho.
+Serialization.
+Cool green-styled UI.
 A LOT MORE...

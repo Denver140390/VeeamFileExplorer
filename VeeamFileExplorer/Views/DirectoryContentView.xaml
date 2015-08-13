@@ -3,10 +3,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:viewModels="clr-namespace:VeeamFileExplorer.ViewModels">
     <UserControl.DataContext>
-        <viewModels:DirectoryContentViewModel/>
+        <viewModels:DirectoryContentViewModel />
     </UserControl.DataContext>
-    
-    <DataGrid ItemsSource="{Binding Content}" />
-<!--    <TreeView ItemsSource="{Binding Files}"/>-->
-    
+
+    <DataGrid ColumnWidth="*"
+              HeadersVisibility="Column"
+              IsReadOnly="True"
+              ItemsSource="{Binding Content}" >
+        
+    </DataGrid>
+
 </UserControl>

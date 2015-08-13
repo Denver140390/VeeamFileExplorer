@@ -19,6 +19,7 @@ namespace VeeamFileExplorer.Views
         {
             _foldersTreeViewModel = DataContext as FoldersTreeViewModel;
             if (_foldersTreeViewModel == null) throw new Exception("Could not cast the DataContext to FoldersTreeViewModel!");
+            _foldersTreeViewModel.LoadLogicalDrives();
 
             foreach (var directory in _foldersTreeViewModel.CurrentDirectoryContent)
             {
@@ -45,8 +46,8 @@ namespace VeeamFileExplorer.Views
             item.Items.Clear();
 
             _foldersTreeViewModel.LoadDirectoryFolders(path);
-            _foldersTreeViewModel.SetCurrentPath(path); //TODO or not TODO?
 
+            //TODO Asynchronous check for subfolders content
             try
             {
                 foreach (var directory in _foldersTreeViewModel.CurrentDirectoryContent)
@@ -57,7 +58,10 @@ namespace VeeamFileExplorer.Views
                         Tag = string.Concat(directory.Path, @"\", directory.Name),
                         FontWeight = FontWeights.Normal
                     };
-                    subItem.Items.Add(_dummyItem);
+                    if (directory.HasSubfolders)
+                    {
+                        subItem.Items.Add(_dummyItem);
+                    }
                     subItem.Expanded += TreeViewItem_Expanded;
                     subItem.Selected += TreeViewItem_Selected;
                     item.Items.Add(subItem);
@@ -76,6 +80,7 @@ namespace VeeamFileExplorer.Views
 
             var path = item.Tag.ToString();
             _foldersTreeViewModel.SetSelectedFolder(path);
+            _foldersTreeViewModel.SetCurrentPath(path);
         }
     }
 }

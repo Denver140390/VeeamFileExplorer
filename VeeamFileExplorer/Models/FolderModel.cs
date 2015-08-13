@@ -2,6 +2,6 @@
 {
     class FolderModel : FileModelBase
     {
-
+        public bool HasSubfolders { get; set; }
     }
 }
