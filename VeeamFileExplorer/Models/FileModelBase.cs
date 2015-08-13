@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using VeeamFileExplorer.Helpers;
 
 namespace VeeamFileExplorer.Models
@@ -9,6 +10,8 @@ namespace VeeamFileExplorer.Models
         private string _path;
         private DateTime _changedDate;
         private long _size;
+        private string _extension;
+        private Icon _icon;
 
         public string Name
         {
@@ -34,6 +37,17 @@ namespace VeeamFileExplorer.Models
             set { SetProperty(ref _size, value, () => Size); }
         }
 
-        //ToDo Extension and Icon properties
+        public string Extension
+        {
+            get { return _extension; }
+            set { SetProperty(ref _extension, value, () => Extension); }
+        }
+
+        //TODO Icon type in Model... Is not it View related?
+        public Icon Icon
+        {
+            get { return _icon; }
+            set { SetProperty(ref _icon, value, () => Icon); }
+        }
     }
 }

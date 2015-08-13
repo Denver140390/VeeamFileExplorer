@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using VeeamFileExplorer.ViewModels;
@@ -29,7 +30,10 @@ namespace VeeamFileExplorer.Views
                     Tag = directory.Name,
                     FontWeight = FontWeights.Normal
                 };
-                item.Items.Add(_dummyItem);
+                if (directory.IsAccessible && directory.HasSubfolders)
+                {
+                    item.Items.Add(_dummyItem);
+                }
                 item.Expanded += TreeViewItem_Expanded;
                 item.Selected += TreeViewItem_Selected;
                 
@@ -46,8 +50,7 @@ namespace VeeamFileExplorer.Views
             item.Items.Clear();
 
             _foldersTreeViewModel.LoadDirectoryFolders(path);
-
-            //TODO Asynchronous check for subfolders content
+            
             try
             {
                 foreach (var directory in _foldersTreeViewModel.CurrentDirectoryContent)
@@ -55,10 +58,11 @@ namespace VeeamFileExplorer.Views
                     var subItem = new TreeViewItem
                     {
                         Header = directory.Name,
-                        Tag = string.Concat(directory.Path, @"\", directory.Name),
+                        //Tag = string.Concat(directory.Path, @"\", directory.Name),
+                        Tag = Path.Combine(directory.Path, directory.Name),
                         FontWeight = FontWeights.Normal
                     };
-                    if (directory.HasSubfolders)
+                    if (directory.IsAccessible && directory.HasSubfolders)
                     {
                         subItem.Items.Add(_dummyItem);
                     }

@@ -15,6 +15,7 @@ Views are showing cool stuff and catching user inputs. Using code-behind tho, co
 Using View-First approach. ViewModel objects are being created in Views.
 
 * Possible improvements
+Improve variable namings. Folder, Directory... Quite messy.
 Interactive DirectoryContentView - open folders and files, copy, paste and other usual Windows Explorer features.
 Address Bar - show current directory path, allow input.
 Multiple ContentViews - for comparison.
@@ -22,4 +23,5 @@ Navigation Buttons - backward and forward actions.
 Asynchronous Loading - load as much info as possible asynchronously. Without affecting too much RAM tho.
 Serialization.
 Cool green-styled UI.
+Use FileInfo class instead of custom Models?
 A LOT MORE...

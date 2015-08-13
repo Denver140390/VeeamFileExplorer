@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.IO;
-using System.Windows;
 using GalaSoft.MvvmLight.Messaging;
 using VeeamFileExplorer.Helpers;
 using VeeamFileExplorer.Models;
 
 namespace VeeamFileExplorer.ViewModels
 {
+    //TODO Add async check to see if there are new drives or folders?
     class FoldersTreeViewModel : PropertyChangedBase
     {
         private ObservableCollection<FolderModel> _currentDirectoryContent;
@@ -30,10 +29,22 @@ namespace VeeamFileExplorer.ViewModels
             {
                 var folder = new FolderModel
                 {
-                    Name = logicalDrive
+                    Name = logicalDrive,
+                    Path = String.Empty
                 };
 
                 _currentDirectoryContent.Add(folder);
+
+                try
+                {
+                    var subfoldersCount = Directory.GetDirectories(folder.Name).Length;
+                    folder.HasSubfolders = subfoldersCount != 0;
+                    folder.IsAccessible = true;
+                }
+                catch (Exception)
+                {
+                    folder.IsAccessible = false;
+                }
             }
         }
 
@@ -44,7 +55,7 @@ namespace VeeamFileExplorer.ViewModels
             {
                 directories = Directory.GetDirectories(path);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 directories = new string[0];
                 //throw new Exception(e.Message);
@@ -53,20 +64,22 @@ namespace VeeamFileExplorer.ViewModels
             _currentDirectoryContent.Clear();
             foreach (string folderName in directories)
             {
-                var name = folderName.Substring(folderName.LastIndexOf("\\", StringComparison.Ordinal) + 1);
                 var folder = new FolderModel
                 {
-                    Name = name,
-                    Path = path,
+                    Name = folderName.Substring(folderName.LastIndexOf("\\", StringComparison.Ordinal) + 1),
+                    Path = path
                 };
 
                 try
                 {
-                    folder.HasSubfolders = Directory.GetDirectories(string.Concat(path, @"\", name)).Length != 0;
+                    //var subfoldersCount = Directory.GetDirectories(string.Concat(folder.Path, @"\", folder.Name)).Length;
+                    var subfoldersCount = Directory.GetDirectories(Path.Combine(folder.Path, folder.Name)).Length;
+                    folder.HasSubfolders = subfoldersCount != 0;
+                    folder.IsAccessible = true;
                 }
                 catch (Exception)
                 {
-                    folder.HasSubfolders = false;
+                    folder.IsAccessible = false;
                 }
                 _currentDirectoryContent.Add(folder);
             }

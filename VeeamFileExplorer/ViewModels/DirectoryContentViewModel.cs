@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Drawing;
 using System.IO;
 using System.Windows;
 using GalaSoft.MvvmLight.Messaging;
@@ -23,7 +24,8 @@ namespace VeeamFileExplorer.ViewModels
         {
             _content = new ObservableCollection<FileModelBase>();
 
-            if (DesignerProperties.GetIsInDesignMode(new DependencyObject())) LoadDummyInfo(); // lifehack for DataGrid designing
+            // Lifehack for DataGrid designing
+            if (DesignerProperties.GetIsInDesignMode(new DependencyObject())) LoadDummyInfo();
 
             Messenger.Default.Register<string>(this, LoadDirectoryContent);
         }
@@ -61,7 +63,7 @@ namespace VeeamFileExplorer.ViewModels
                 directories = Directory.GetDirectories(path);
                 files = Directory.GetFiles(path);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 directories = new string[0];
                 files = new string[0];
@@ -78,11 +80,17 @@ namespace VeeamFileExplorer.ViewModels
                     //Size = (new FileInfo(file)).Length //ToDo async folder size calculation
                 };
 
+
                 _content.Add(folderModel);
             }
             
             foreach (var file in files)
             {
+                //Fixing an odd behaviour. I've got a file: D:\Autorun.inf\lpt1.UsbFix, which I can see in Windows File Explorer,
+                //but which I can't delete. It says, this file does not exist anymore.
+                //And of course such file causes exception, when trying to calculate its size. Ignore the case.
+                if (!File.Exists(file)) continue;
+
                 var fileModel = new FileModel
                 {
                     Name = file.Substring(file.LastIndexOf("\\", StringComparison.Ordinal) + 1),
@@ -90,6 +98,10 @@ namespace VeeamFileExplorer.ViewModels
                     ChangedDate = File.GetLastWriteTime(path),
                     Size = (new FileInfo(file)).Length
                 };
+                var icon = Icon.ExtractAssociatedIcon(file);
+                //var fullPath = string.Concat(fileModel.Path, @"\", fileModel.Name);
+                var fullPath = Path.Combine(fileModel.Path, fileModel.Name);
+                fileModel.ChangedDate = File.GetLastWriteTime(fullPath);
 
                 _content.Add(fileModel);
             }
