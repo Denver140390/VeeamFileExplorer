@@ -59,7 +59,7 @@ namespace VeeamFileExplorer.Views
                     {
                         Header = directory.Name,
                         //Tag = string.Concat(directory.Path, @"\", directory.Name),
-                        Tag = Path.Combine(directory.Path, directory.Name),
+                        Tag = directory.FullPath,
                         FontWeight = FontWeights.Normal
                     };
                     if (directory.IsAccessible && directory.HasSubfolders)

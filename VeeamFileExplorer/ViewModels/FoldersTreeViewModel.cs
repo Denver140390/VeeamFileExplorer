@@ -30,7 +30,7 @@ namespace VeeamFileExplorer.ViewModels
                 var folder = new FolderModel
                 {
                     Name = logicalDrive,
-                    Path = String.Empty
+                    FullPath = logicalDrive
                 };
 
                 _currentDirectoryContent.Add(folder);
@@ -67,13 +67,13 @@ namespace VeeamFileExplorer.ViewModels
                 var folder = new FolderModel
                 {
                     Name = folderName.Substring(folderName.LastIndexOf("\\", StringComparison.Ordinal) + 1),
-                    Path = path
+                    FullPath = folderName
                 };
 
                 try
                 {
                     //var subfoldersCount = Directory.GetDirectories(string.Concat(folder.Path, @"\", folder.Name)).Length;
-                    var subfoldersCount = Directory.GetDirectories(Path.Combine(folder.Path, folder.Name)).Length;
+                    var subfoldersCount = Directory.GetDirectories(folder.FullPath).Length;
                     folder.HasSubfolders = subfoldersCount != 0;
                     folder.IsAccessible = true;
                 }

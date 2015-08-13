@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Drawing;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows;
 using GalaSoft.MvvmLight.Messaging;
 using VeeamFileExplorer.Helpers;
@@ -35,7 +36,7 @@ namespace VeeamFileExplorer.ViewModels
             var folderModel = new FolderModel
             {
                 Name = "Folder",
-                Path = "D:\\",
+                FullPath = "D:\\Folder",
                 ChangedDate = DateTime.Now
             };
 
@@ -44,9 +45,10 @@ namespace VeeamFileExplorer.ViewModels
             var fileModel = new FileModel
             {
                 Name = "File",
-                Path = "D:\\",
+                FullPath = "D:\\File",
                 ChangedDate = DateTime.Now,
-                Size = 123
+                Size = 123,
+                Extension = "no"
             };
 
             _content.Add(fileModel);
@@ -75,7 +77,7 @@ namespace VeeamFileExplorer.ViewModels
                 var folderModel = new FolderModel
                 {
                     Name = folder.Substring(folder.LastIndexOf("\\", StringComparison.Ordinal) + 1),
-                    Path = path,
+                    FullPath = folder,
                     ChangedDate = File.GetLastWriteTime(path)
                     //Size = (new FileInfo(file)).Length //ToDo async folder size calculation
                 };
@@ -91,20 +93,68 @@ namespace VeeamFileExplorer.ViewModels
                 //And of course such file causes exception, when trying to calculate its size. Ignore the case.
                 if (!File.Exists(file)) continue;
 
-                var fileModel = new FileModel
-                {
-                    Name = file.Substring(file.LastIndexOf("\\", StringComparison.Ordinal) + 1),
-                    Path = path,
-                    ChangedDate = File.GetLastWriteTime(path),
-                    Size = (new FileInfo(file)).Length
-                };
-                var icon = Icon.ExtractAssociatedIcon(file);
-                //var fullPath = string.Concat(fileModel.Path, @"\", fileModel.Name);
-                var fullPath = Path.Combine(fileModel.Path, fileModel.Name);
-                fileModel.ChangedDate = File.GetLastWriteTime(fullPath);
+//                var fileInfo = new FileInfo(file);
+//                var fileModel = new FileModel
+//                {
+//                    Name = file.Substring(file.LastIndexOf("\\", StringComparison.Ordinal) + 1),
+//                    FullPath = file,
+//                    ChangedDate = File.GetLastWriteTime(file),
+//                    Size = fileInfo.Length,
+//                    Extension = fileInfo.Extension,
+//                    Icon = Icon.ExtractAssociatedIcon(file)
+//                };
+//
 
+                var fileModel = new FileModel();
+                CreateFileModel(file, fileModel);
+                //CreateFileModelAsync(file, fileModel);
                 _content.Add(fileModel);
             }
+
+            //CalculateFileSizeAsync();
+        }
+
+        private void CreateFileModel(string filePath, FileModel file)
+        {
+            var fileInfo = new FileInfo(filePath);
+
+            file.Name = filePath.Substring(filePath.LastIndexOf("\\", StringComparison.Ordinal) + 1);
+            file.FullPath = filePath;
+            file.ChangedDate = File.GetLastWriteTime(filePath);
+            file.Size = fileInfo.Length;
+            file.Extension = fileInfo.Extension;
+            file.Icon = Icon.ExtractAssociatedIcon(filePath);
+        }
+
+        private async void CreateFileModelAsync(string filePath, FileModel file)
+        {
+            await Task.Run(() =>
+            {
+                var fileInfo = new FileInfo(filePath);
+
+                file.Name = filePath.Substring(filePath.LastIndexOf("\\", StringComparison.Ordinal) + 1);
+                file.FullPath = filePath;
+                file.ChangedDate = File.GetLastWriteTime(filePath);
+                file.Size = fileInfo.Length;
+                file.Extension = fileInfo.Extension;
+                file.Icon = Icon.ExtractAssociatedIcon(filePath);
+            });
+        }
+
+        private async void CalculateFileSizeAsync()
+        {
+            await Task.Run(() =>
+            {
+                foreach(var file in _content)
+            {
+                    var fileModel = file as FileModel;
+                    if (fileModel != null)
+                    {
+                        var fileInfo = new FileInfo(fileModel.FullPath);
+                        file.Size = fileInfo.Length;
+                    }
+                }
+            });
         }
     }
 }

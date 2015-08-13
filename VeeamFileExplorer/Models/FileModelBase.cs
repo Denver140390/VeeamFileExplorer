@@ -7,7 +7,7 @@ namespace VeeamFileExplorer.Models
     abstract class FileModelBase : PropertyChangedBase
     {
         private string _name;
-        private string _path;
+        private string _fullPath;
         private DateTime _changedDate;
         private long _size;
         private string _extension;
@@ -19,12 +19,13 @@ namespace VeeamFileExplorer.Models
             set { SetProperty(ref _name, value, () => Name); }
         }
 
-        public string Path
+        public string FullPath
         {
-            get { return _path; }
-            set { SetProperty(ref _path, value, () => Path); }
+            get { return _fullPath; }
+            set { SetProperty(ref _fullPath, value, () => FullPath); }
         }
 
+        //TODO It is calculated in a wrong way
         public DateTime ChangedDate
         {
             get { return _changedDate; }
