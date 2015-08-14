@@ -2,8 +2,8 @@
 Framework version: 4.5.2
 
 The program is designed to browse local file system.
-UI consists of 3 views: address bar, folders tree view and currently opened directory content view (DataGrid).
-Selecting a folder in folders tree updates address bar and asyncronously loads info in DataGrid.
+UI consists of 3 views: address bar, folders tree view and currently-opened-directory-content view (DataGrid).
+Selecting a folder in folders' tree updates address bar and asyncronously loads info into DataGrid.
 
 * About code
 In this File Explorer I tried to follow the MVVM principles of separating business logic (Models) from UI (Views) by connecting them with bridges (ViewModels). Pretty usual.
@@ -13,10 +13,10 @@ The idea here is to separate Files and Folders as different entities, while stil
 Making easy things hard, yay!
 
 ViewModels are to decorate Models to make them bindable by Views. Having a collection of FileModelBase class instances seems to be a nice way to pass the data about Files and Folders to the Views.
-Using MVVMLight Toolkit to pass data between ViewModels using Messenger system.
+Using MVVMLight Toolkit (NuGet package) to pass data between ViewModels using Messenger system.
 
 Views are showing cool stuff and catching user inputs. Using code-behind tho, could not quite manage, how to implement the logic in XAML-only.
-Using View-First approach. ViewModel objects are being created in Views.
+Implemented View-First approach. ViewModel objects are being created in Views.
 
 Folders and Files are loading asyncronously on TreeView item selection or expanding.
 
