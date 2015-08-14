@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Drawing;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Interop;
-using System.Windows.Media.Imaging;
-using GalaSoft.MvvmLight.Messaging;
 using VeeamFileExplorer.Helpers;
+using VeeamFileExplorer.Helpers.Messenger;
 using VeeamFileExplorer.Models;
 
 namespace VeeamFileExplorer.ViewModels

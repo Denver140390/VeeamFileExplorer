@@ -13,7 +13,7 @@ The idea here is to separate Files and Folders as different entities, while stil
 Making easy things hard, yay!
 
 ViewModels are to decorate Models to make them bindable by Views. Having a collection of FileModelBase class instances seems to be a nice way to pass the data about Files and Folders to the Views.
-Using MVVMLight Toolkit (NuGet package) to pass data between ViewModels using Messenger system.
+Using MVVMLight Toolkit Messenger class to pass data between ViewModels.
 
 Views are showing cool stuff and catching user inputs. Using code-behind tho, could not quite manage, how to implement the logic in XAML-only.
 Implemented View-First approach. ViewModel objects are being created in Views.

@@ -2,8 +2,8 @@
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Threading.Tasks;
-using GalaSoft.MvvmLight.Messaging;
 using VeeamFileExplorer.Helpers;
+using VeeamFileExplorer.Helpers.Messenger;
 using VeeamFileExplorer.Models;
 
 namespace VeeamFileExplorer.ViewModels
@@ -97,7 +97,6 @@ namespace VeeamFileExplorer.ViewModels
 
         public void SetSelectedFolder(string path)
         {
-            //TODO Use own Messenger. 4 references for 1 feature is not cool (MVVMLight toolkit for Messenger system). It feels wrong.
             Messenger.Default.Send(path);
         }
     }

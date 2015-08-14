@@ -1,8 +1,7 @@
 ﻿using System;
-using System.IO;
+using System.Collections.Specialized;
 using System.Windows;
 using System.Windows.Controls;
-using VeeamFileExplorer.Models;
 using VeeamFileExplorer.ViewModels;
 
 namespace VeeamFileExplorer.Views
@@ -83,7 +82,7 @@ namespace VeeamFileExplorer.Views
 //            }
         }
 
-        private void CurrentDirectoryContent_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        private void CurrentDirectoryContent_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             int lastAddedIndex = _foldersTreeViewModel.CurrentDirectoryContent.Count - 1;
             if (_currentTreeViewItem == null || lastAddedIndex < 0) return;
