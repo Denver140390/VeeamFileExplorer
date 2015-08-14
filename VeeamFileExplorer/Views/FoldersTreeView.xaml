@@ -13,8 +13,7 @@
     <!--    -->
     <!--    </UserControl.Resources>-->
 
-
-    <TreeView Loaded="TreeView_OnLoaded">
+    <TreeView Loaded="TreeView_OnLoaded" VirtualizingStackPanel.IsVirtualizing="True">
         <TreeView.Resources>
             <Style TargetType="{x:Type TreeViewItem}">
                 <Setter Property="HeaderTemplate">
