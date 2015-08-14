@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Windows.Media.Imaging;
 using VeeamFileExplorer.Helpers;
 
 namespace VeeamFileExplorer.Models
@@ -11,7 +12,7 @@ namespace VeeamFileExplorer.Models
         private DateTime _changedDate;
         private long _size;
         private string _extension;
-        private Icon _icon;
+//        private BitmapSource _icon;
 
         public string Name
         {
@@ -24,8 +25,7 @@ namespace VeeamFileExplorer.Models
             get { return _fullPath; }
             set { SetProperty(ref _fullPath, value, () => FullPath); }
         }
-
-        //TODO It is calculated in a wrong way
+        
         public DateTime ChangedDate
         {
             get { return _changedDate; }
@@ -44,11 +44,11 @@ namespace VeeamFileExplorer.Models
             set { SetProperty(ref _extension, value, () => Extension); }
         }
 
-        //TODO Icon type in Model... Is not it View related?
-        public Icon Icon
-        {
-            get { return _icon; }
-            set { SetProperty(ref _icon, value, () => Icon); }
-        }
+//        //TODO Add file or folder icons in DataGrid
+//        public BitmapSource Icon
+//        {
+//            get { return _icon; }
+//            set { SetProperty(ref _icon, value, () => Icon); }
+//        }
     }
 }

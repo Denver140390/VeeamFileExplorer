@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Threading.Tasks;
 using GalaSoft.MvvmLight.Messaging;
 using VeeamFileExplorer.Helpers;
 using VeeamFileExplorer.Models;
@@ -48,7 +49,7 @@ namespace VeeamFileExplorer.ViewModels
             }
         }
 
-        public void LoadDirectoryFolders(string path)
+        public async Task LoadDirectoryFoldersAsync(string path)
         {
             string[] directories;
             try
@@ -62,26 +63,31 @@ namespace VeeamFileExplorer.ViewModels
             }
 
             _currentDirectoryContent.Clear();
-            foreach (string folderName in directories)
+            foreach (string folderPath in directories)
             {
-                var folder = new FolderModel
-                {
-                    Name = folderName.Substring(folderName.LastIndexOf("\\", StringComparison.Ordinal) + 1),
-                    FullPath = folderName
-                };
+                var folder = new FolderModel();
 
-                try
-                {
-                    //var subfoldersCount = Directory.GetDirectories(string.Concat(folder.Path, @"\", folder.Name)).Length;
-                    var subfoldersCount = Directory.GetDirectories(folder.FullPath).Length;
-                    folder.HasSubfolders = subfoldersCount != 0;
-                    folder.IsAccessible = true;
-                }
-                catch (Exception)
-                {
-                    folder.IsAccessible = false;
-                }
+                
+                await Task.Run(() => CreateFolderModel(folderPath, folder));
+                //CreateFolderModel(folderPath, folder);
                 _currentDirectoryContent.Add(folder);
+            }
+        }
+
+        private void CreateFolderModel(string folderPath, FolderModel folder)
+        {
+            folder.Name = folderPath.Substring(folderPath.LastIndexOf("\\", StringComparison.Ordinal) + 1);
+            folder.FullPath = folderPath;
+
+            try
+            {
+                var subfoldersCount = Directory.GetDirectories(folder.FullPath).Length;
+                folder.HasSubfolders = subfoldersCount != 0;
+                folder.IsAccessible = true;
+            }
+                catch (Exception)
+            {
+                folder.IsAccessible = false;
             }
         }
 

@@ -6,6 +6,7 @@
         <viewModels:DirectoryContentViewModel />
     </UserControl.DataContext>
 
+<!--    TODO Change DataGrid design. Change column templates for better data visualization. Subscribe to double click event to open files and folders.-->
     <DataGrid ColumnWidth="*"
               HeadersVisibility="Column"
               IsReadOnly="True"

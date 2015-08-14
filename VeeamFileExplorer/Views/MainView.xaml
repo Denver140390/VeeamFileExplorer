@@ -9,11 +9,13 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="3*"/>
         </Grid.ColumnDefinitions>
-        <views:CurrentPathView Grid.ColumnSpan="2"/>
+        <views:CurrentPathView Grid.ColumnSpan="3"/>
         <views:FoldersTreeView Grid.Row="1" Grid.Column="0"/>
-        <views:DirectoryContentView Grid.Row="1" Grid.Column="1"/>
+        <GridSplitter Grid.Row="1" Grid.Column="1" Width="3" VerticalAlignment="Stretch" HorizontalAlignment="Center"/>
+        <views:DirectoryContentView Grid.Row="1" Grid.Column="2"/>
     </Grid>
 </Window>

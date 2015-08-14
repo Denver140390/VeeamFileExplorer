@@ -5,6 +5,8 @@ using System.Drawing;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Interop;
+using System.Windows.Media.Imaging;
 using GalaSoft.MvvmLight.Messaging;
 using VeeamFileExplorer.Helpers;
 using VeeamFileExplorer.Models;
@@ -28,7 +30,7 @@ namespace VeeamFileExplorer.ViewModels
             // Lifehack for DataGrid designing
             if (DesignerProperties.GetIsInDesignMode(new DependencyObject())) LoadDummyInfo();
 
-            Messenger.Default.Register<string>(this, LoadDirectoryContent);
+            Messenger.Default.Register<string>(this, LoadDirectoryContentAsync);
         }
 
         private void LoadDummyInfo()
@@ -48,13 +50,13 @@ namespace VeeamFileExplorer.ViewModels
                 FullPath = "D:\\File",
                 ChangedDate = DateTime.Now,
                 Size = 123,
-                Extension = "no"
+                Extension = ".none"
             };
 
             _content.Add(fileModel);
         }
 
-        public void LoadDirectoryContent(string path)
+        public async void LoadDirectoryContentAsync(string path)
         {
             _content.Clear();
 
@@ -72,41 +74,23 @@ namespace VeeamFileExplorer.ViewModels
                 //throw new Exception(e.Message);
             }
 
-            foreach (var folder in directories)
+            foreach (var folderPath in directories)
             {
-                var folderModel = new FolderModel
-                {
-                    Name = folder.Substring(folder.LastIndexOf("\\", StringComparison.Ordinal) + 1),
-                    FullPath = folder,
-                    ChangedDate = File.GetLastWriteTime(path)
-                    //Size = (new FileInfo(file)).Length //ToDo async folder size calculation
-                };
-
+                var folderModel = new FolderModel();
+                await Task.Run(() => CreateFolderModel(folderPath, folderModel));
 
                 _content.Add(folderModel);
             }
             
-            foreach (var file in files)
+            foreach (var filePath in files)
             {
                 //Fixing an odd behaviour. I've got a file: D:\Autorun.inf\lpt1.UsbFix, which I can see in Windows File Explorer,
                 //but which I can't delete. It says, this file does not exist anymore.
                 //And of course such file causes exception, when trying to calculate its size. Ignore the case.
-                if (!File.Exists(file)) continue;
-
-//                var fileInfo = new FileInfo(file);
-//                var fileModel = new FileModel
-//                {
-//                    Name = file.Substring(file.LastIndexOf("\\", StringComparison.Ordinal) + 1),
-//                    FullPath = file,
-//                    ChangedDate = File.GetLastWriteTime(file),
-//                    Size = fileInfo.Length,
-//                    Extension = fileInfo.Extension,
-//                    Icon = Icon.ExtractAssociatedIcon(file)
-//                };
-//
+                if (!File.Exists(filePath)) continue;
 
                 var fileModel = new FileModel();
-                CreateFileModel(file, fileModel);
+                await Task.Run(() => CreateFileModel(filePath, fileModel));
                 //CreateFileModelAsync(file, fileModel);
                 _content.Add(fileModel);
             }
@@ -114,47 +98,55 @@ namespace VeeamFileExplorer.ViewModels
             //CalculateFileSizeAsync();
         }
 
+        private void CreateFolderModel(string folderPath, FolderModel folder)
+        {
+            folder.Name = folderPath.Substring(folderPath.LastIndexOf("\\", StringComparison.Ordinal) + 1);
+            folder.FullPath = folderPath;
+            folder.ChangedDate = File.GetLastWriteTime(folderPath);
+            //Size = (new FileInfo(file)).Length //TODO folder size calculation
+        }
+
         private void CreateFileModel(string filePath, FileModel file)
         {
             var fileInfo = new FileInfo(filePath);
+            //var iconBitmap = Icon.ExtractAssociatedIcon(filePath).ToBitmap();
+            //var iconBitmapImage = Bitmap2BitmapImage(iconBitmap);
 
             file.Name = filePath.Substring(filePath.LastIndexOf("\\", StringComparison.Ordinal) + 1);
             file.FullPath = filePath;
             file.ChangedDate = File.GetLastWriteTime(filePath);
             file.Size = fileInfo.Length;
             file.Extension = fileInfo.Extension;
-            file.Icon = Icon.ExtractAssociatedIcon(filePath);
+            //file.Icon = iconBitmapImage;
         }
 
         private async void CreateFileModelAsync(string filePath, FileModel file)
         {
-            await Task.Run(() =>
-            {
-                var fileInfo = new FileInfo(filePath);
-
-                file.Name = filePath.Substring(filePath.LastIndexOf("\\", StringComparison.Ordinal) + 1);
-                file.FullPath = filePath;
-                file.ChangedDate = File.GetLastWriteTime(filePath);
-                file.Size = fileInfo.Length;
-                file.Extension = fileInfo.Extension;
-                file.Icon = Icon.ExtractAssociatedIcon(filePath);
-            });
+            await Task.Run(() => CreateFileModel(filePath, file));
         }
 
-        private async void CalculateFileSizeAsync()
-        {
-            await Task.Run(() =>
-            {
-                foreach(var file in _content)
-            {
-                    var fileModel = file as FileModel;
-                    if (fileModel != null)
-                    {
-                        var fileInfo = new FileInfo(fileModel.FullPath);
-                        file.Size = fileInfo.Length;
-                    }
-                }
-            });
-        }
+//        [System.Runtime.InteropServices.DllImport("gdi32.dll")]
+//        public static extern bool DeleteObject(IntPtr hObject);
+//
+//        private BitmapSource Bitmap2BitmapImage(Bitmap bitmap)
+//        {
+//            IntPtr hBitmap = bitmap.GetHbitmap();
+//            BitmapSource retval;
+//
+//            try
+//            {
+//                retval = Imaging.CreateBitmapSourceFromHBitmap(
+//                             hBitmap,
+//                             IntPtr.Zero,
+//                             Int32Rect.Empty,
+//                             BitmapSizeOptions.FromEmptyOptions());
+//            }
+//            finally
+//            {
+//                DeleteObject(hBitmap);
+//            }
+//
+//            return retval;
+//        }
     }
 }

@@ -41,7 +41,7 @@ namespace VeeamFileExplorer.Views
             }
         }
 
-        private void TreeViewItem_Expanded(object sender, RoutedEventArgs e)
+        private async void TreeViewItem_Expanded(object sender, RoutedEventArgs e)
         {
             var item = (TreeViewItem)sender;
             if (!item.IsExpanded) return; // we want to perform only with expanded one
@@ -49,7 +49,8 @@ namespace VeeamFileExplorer.Views
             if (item.Items.Count != 1 || item.Items[0] != _dummyItem) return;
             item.Items.Clear();
 
-            _foldersTreeViewModel.LoadDirectoryFolders(path);
+            var loadingTask = _foldersTreeViewModel.LoadDirectoryFoldersAsync(path);
+            await loadingTask;
             
             try
             {
