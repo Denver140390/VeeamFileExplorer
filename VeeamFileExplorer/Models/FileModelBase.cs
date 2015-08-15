@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows.Media.Imaging;
 using VeeamFileExplorer.Helpers;
 
 namespace VeeamFileExplorer.Models
@@ -10,7 +11,7 @@ namespace VeeamFileExplorer.Models
         private DateTime _changedDate;
         private long _size;
         private string _extension;
-//        private BitmapSource _icon;
+        private BitmapSource _icon;
 
         public string Name
         {
@@ -42,11 +43,11 @@ namespace VeeamFileExplorer.Models
             set { SetProperty(ref _extension, value, () => Extension); }
         }
 
-//        //TODO Add file or folder icons in DataGrid
-//        public BitmapSource Icon
-//        {
-//            get { return _icon; }
-//            set { SetProperty(ref _icon, value, () => Icon); }
-//        }
+        //TODO Add file or folder icons in DataGrid
+        public BitmapSource Icon
+        {
+            get { return _icon; }
+            set { SetProperty(ref _icon, value, () => Icon); }
+        }
     }
 }

@@ -8,7 +8,7 @@ using VeeamFileExplorer.Models;
 
 namespace VeeamFileExplorer.ViewModels
 {
-    //TODO Add async check to see if there are new drives or folders?
+    //TODO ??? Add async check to see if there are new drives or folders?
     class FoldersTreeViewModel : PropertyChangedBase
     {
         private readonly ObservableCollection<FolderModel> _currentDirectoryContent;

@@ -7,8 +7,7 @@
     <UserControl.DataContext>
         <viewModels:FoldersTreeViewModel />
     </UserControl.DataContext>
-    
-    <!--TODO "Open in Windows Explorer" button in context menu: Process.Start(@"c:\test");-->
+   
     <UserControl.Resources>
         <Style TargetType="{x:Type TreeViewItem}">
             <Setter Property="HeaderTemplate">
