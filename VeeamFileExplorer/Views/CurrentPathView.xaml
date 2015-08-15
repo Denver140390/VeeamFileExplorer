@@ -7,5 +7,5 @@
         <ObjectDataProvider x:Key="Singleton" ObjectType="{x:Type viewModels:CurrentPathViewModel}" MethodName="get_Instance"/>
     </UserControl.Resources>
     
-    <TextBox Text="{Binding Source={StaticResource Singleton}, Path=Value}" IsReadOnly="True"/>
+    <TextBox Text="{Binding Source={StaticResource Singleton}, Path=Value}" KeyDown="TextBox_KeyDown"/>
 </UserControl>

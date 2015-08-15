@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Drawing;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Interop;
@@ -28,12 +29,12 @@ namespace VeeamFileExplorer.ViewModels
             _content = new ObservableCollection<FileModelBase>();
 
             // Lifehack for DataGrid designing
-            if (DesignerProperties.GetIsInDesignMode(new DependencyObject())) LoadDummyInfo();
+            if (DesignerProperties.GetIsInDesignMode(new DependencyObject())) LoadDummyData();
 
             Messenger.Default.Register<string>(this, LoadDirectoryContentAsync);
         }
 
-        private void LoadDummyInfo()
+        private void LoadDummyData()
         {
             var folderModel = new FolderModel
             {
@@ -125,17 +126,17 @@ namespace VeeamFileExplorer.ViewModels
             file.Icon = iconBitmapImage;
         }
 
-        [System.Runtime.InteropServices.DllImport("gdi32.dll")]
+        [DllImport("gdi32.dll")]
         public static extern bool DeleteObject(IntPtr hObject);
 
         private BitmapSource Bitmap2BitmapImage(Bitmap bitmap)
         {
             IntPtr hBitmap = bitmap.GetHbitmap();
-            BitmapSource retval;
+            BitmapSource source;
 
             try
             {
-                retval = Imaging.CreateBitmapSourceFromHBitmap(
+                source = Imaging.CreateBitmapSourceFromHBitmap(
                     hBitmap,
                     IntPtr.Zero,
                     Int32Rect.Empty,
@@ -146,7 +147,7 @@ namespace VeeamFileExplorer.ViewModels
                 DeleteObject(hBitmap);
             }
 
-            return retval;
+            return source;
         }
     }
 }

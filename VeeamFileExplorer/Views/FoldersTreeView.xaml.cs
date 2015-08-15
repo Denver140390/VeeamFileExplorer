@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using VeeamFileExplorer.Helpers;
 using VeeamFileExplorer.ViewModels;
 
 namespace VeeamFileExplorer.Views
@@ -24,6 +27,7 @@ namespace VeeamFileExplorer.Views
             _foldersTreeViewModel = DataContext as FoldersTreeViewModel;
             if (_foldersTreeViewModel == null) throw new Exception("Could not cast the DataContext to FoldersTreeViewModel!");
             _foldersTreeViewModel.CurrentDirectoryContent.CollectionChanged += CurrentDirectoryContent_CollectionChanged;
+            CurrentPathViewModel.Instance.OnPathChangedEvent += OnPathChanged;
             _foldersTreeViewModel.LoadLogicalDrives();
 
             foreach (var directory in _foldersTreeViewModel.CurrentDirectoryContent)
@@ -43,6 +47,46 @@ namespace VeeamFileExplorer.Views
                 
                 ((TreeView)sender).Items.Add(item);
             }
+        }
+
+        private void OnPathChanged(object sender, EventArgs e)
+        {
+            string newPath = CurrentPathViewModel.Instance.Value;
+
+            var pathParts = newPath.Split('\\').ToList();
+            if (pathParts[pathParts.Count - 1].Equals(String.Empty))
+            {
+                pathParts.RemoveAt(pathParts.Count - 1);
+            }
+
+            int level = 0;
+            TreeViewItem lastItem = null;
+            while (level < pathParts.Count)
+            {
+//                var items = this.FindTreeViewItems();
+//                List<string> headers = items.Select(item => item.Header.ToString()).ToList();
+//                var matches = from item in items
+//                              where headers.All(header => header.Contains(pathParts[level]))
+//                              select item;
+//                var match = matches.FirstOrDefault();
+//                match.IsExpanded = true;
+//                lastItem = match;
+
+                foreach (var item in this.FindTreeViewItems())
+                {
+                    string header = item.Header.ToString();
+                    string pathPart = pathParts[level];
+                    if (header.Equals(pathPart) || header.Equals(String.Concat(pathPart, "\\")))
+                    {
+                        item.IsExpanded = true;
+                        lastItem = item;
+                        break;
+                    }
+                }
+                level++;
+            }
+            if (lastItem != null)
+                lastItem.IsSelected = true;
         }
 
         private async void TreeViewItem_Expanded(object sender, RoutedEventArgs e)

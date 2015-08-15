@@ -48,9 +48,12 @@
                     </DataTemplate>
                 </DataGridTemplateColumn.CellTemplate>
             </DataGridTemplateColumn>
-            <DataGridTextColumn Binding="{Binding Name}" Header="Name" />
-            <DataGridTextColumn Binding="{Binding ChangedDate, Converter={x:Static converters:DateTimeToStringConverter.Instance}}" Header="Last Modified" />
-            <DataGridTextColumn Binding="{Binding Extension}" Header="Extension" />
+            <DataGridTextColumn Width="250"
+                                Binding="{Binding Name}" Header="Name" />
+            <DataGridTextColumn Width="150"
+                                Binding="{Binding ChangedDate, Converter={x:Static converters:DateTimeToStringConverter.Instance}}" Header="Last Modified" />
+            <DataGridTextColumn Width="75"
+                                Binding="{Binding Extension}" Header="Extension" />
             <DataGridTextColumn Binding="{Binding Size, Converter={x:Static converters:SizeToStringConverter.Instance}}" Header="Size" />
         </DataGrid.Columns>
     </DataGrid>

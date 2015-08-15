@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using VeeamFileExplorer.Helpers;
 
 namespace VeeamFileExplorer.ViewModels
@@ -16,6 +17,19 @@ namespace VeeamFileExplorer.ViewModels
         public void OpenInWindowsExplorer()
         {
             Process.Start(_value);
+        }
+
+        public void LoadNewPath(string newPath)
+        {
+            Value = newPath;
+            RaiseOnPathChangedEvent();
+        }
+
+        public delegate void OnPathChangedEventHandler(object sender, EventArgs e);
+        public event OnPathChangedEventHandler OnPathChangedEvent;
+        protected virtual void RaiseOnPathChangedEvent()
+        {
+            OnPathChangedEvent?.Invoke(this, new EventArgs());
         }
 
         #region Singleton
