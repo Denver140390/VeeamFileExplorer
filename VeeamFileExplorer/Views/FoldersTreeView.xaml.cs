@@ -2,6 +2,8 @@
 using System.Collections.Specialized;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Media;
 using VeeamFileExplorer.ViewModels;
 
 namespace VeeamFileExplorer.Views
@@ -113,6 +115,35 @@ namespace VeeamFileExplorer.Views
             var path = item.Tag.ToString();
             _foldersTreeViewModel.SetSelectedFolder(path);
             _foldersTreeViewModel.SetCurrentPath(path);
+        }
+
+        private void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            TreeView.ContextMenu = Resources["FolderContext"] as ContextMenu;
+        }
+
+        private void TreeView_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            var treeViewItem = VisualUpwardSearch(e.OriginalSource as DependencyObject);
+
+            if (treeViewItem != null)
+            {
+                treeViewItem.Focus();
+                e.Handled = true;
+            }
+        }
+
+        private static TreeViewItem VisualUpwardSearch(DependencyObject source)
+        {
+            while (source != null && !(source is TreeViewItem))
+                source = VisualTreeHelper.GetParent(source);
+
+            return source as TreeViewItem;
+        }
+
+        private void ContextMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            CurrentPathViewModel.Instance.OpenInWindowsExplorer();
         }
     }
 }

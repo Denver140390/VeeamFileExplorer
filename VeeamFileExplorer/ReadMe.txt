@@ -4,6 +4,7 @@ Framework version: 4.5.2
 The program is designed to browse local file system.
 UI consists of 3 views: address bar, folders tree view and currently-opened-directory-content view (DataGrid).
 Selecting a folder in folders' tree updates address bar and asyncronously loads info into DataGrid.
+Right mouse button click on folders' tree opens context menu with "Open in Windows Explorer" item.
 
 * About code
 In this File Explorer I tried to follow the MVVM principles of separating business logic (Models) from UI (Views) by connecting them with bridges (ViewModels). Pretty usual.
@@ -21,6 +22,7 @@ Implemented View-First approach. ViewModel objects are being created in Views.
 Folders and Files are loading asyncronously on TreeView item selection or expanding.
 
 * Possible improvements
+Add comments in the code.
 Improve variables and classes namings. Folder, Directory... Quite messy.
 Interactive DirectoryContentView - open folders and files, copy, paste and other usual Windows Explorer features.
 Address Bar - allow input.

@@ -1,4 +1,5 @@
-﻿using VeeamFileExplorer.Helpers;
+﻿using System.Diagnostics;
+using VeeamFileExplorer.Helpers;
 
 namespace VeeamFileExplorer.ViewModels
 {
@@ -10,6 +11,11 @@ namespace VeeamFileExplorer.ViewModels
         {
             get { return _value; }
             set { SetProperty(ref _value, value, () => Value); }
+        }
+
+        public void OpenInWindowsExplorer()
+        {
+            Process.Start(_value);
         }
 
         #region Singleton

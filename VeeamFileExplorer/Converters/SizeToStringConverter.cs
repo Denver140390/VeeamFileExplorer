@@ -27,7 +27,7 @@ namespace VeeamFileExplorer.Converters
             {
                 double doubleSize = (double)size / 1024 / 1024 / 1024;
 
-                s = String.Concat(String.Format("{0:F2}", doubleSize), " GB");
+                s = String.Concat($"{doubleSize:F2}", " GB");
             }
 
             return s;

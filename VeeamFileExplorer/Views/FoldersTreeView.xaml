@@ -28,10 +28,16 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <ContextMenu x:Key="FolderContext" StaysOpen="True">
+            <MenuItem Header="Open in Windows Explorer" Click="ContextMenuItem_Click"/>
+        </ContextMenu>
     </UserControl.Resources>
 
-    <TreeView Loaded="TreeView_OnLoaded"
-              VirtualizingStackPanel.IsVirtualizing="True">
-        <TreeView.Resources />
+    <TreeView Name="TreeView"
+              Loaded="TreeView_OnLoaded"
+              SelectedItemChanged="TreeView_SelectedItemChanged"
+              PreviewMouseRightButtonDown="TreeView_PreviewMouseRightButtonDown"
+              VirtualizingStackPanel.IsVirtualizing="True"
+              ContextMenu="{StaticResource FolderContext}">
     </TreeView>
 </UserControl>
