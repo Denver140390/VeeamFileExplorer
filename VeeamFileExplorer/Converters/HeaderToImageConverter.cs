@@ -5,7 +5,6 @@ using System.Windows.Media.Imaging;
 
 namespace VeeamFileExplorer.Converters
 {
-    [ValueConversion(typeof(string), typeof(bool))]
     public class HeaderToImageConverter : IValueConverter
     {
         public static HeaderToImageConverter Instance = new HeaderToImageConverter();

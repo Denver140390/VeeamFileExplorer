@@ -53,7 +53,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converters\DateTimeToStringConverter.cs" />
     <Compile Include="Converters\HeaderToImageConverter.cs" />
+    <Compile Include="Converters\SizeToStringConverter.cs" />
     <Compile Include="Helpers\Messenger\IExecuteWithObject.cs" />
     <Compile Include="Helpers\Messenger\IMessenger.cs" />
     <Compile Include="Helpers\Messenger\Messenger.cs" />

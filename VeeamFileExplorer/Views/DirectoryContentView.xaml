@@ -1,17 +1,53 @@
 ﻿<UserControl x:Class="VeeamFileExplorer.Views.DirectoryContentView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:viewModels="clr-namespace:VeeamFileExplorer.ViewModels">
+             xmlns:viewModels="clr-namespace:VeeamFileExplorer.ViewModels"
+             xmlns:converters="clr-namespace:VeeamFileExplorer.Converters">
     <UserControl.DataContext>
         <viewModels:DirectoryContentViewModel />
     </UserControl.DataContext>
+    
+    <UserControl.Resources>
+<!--        <Style TargetType="{x:Type DataGridColumnHeader}">-->
+<!--            <Setter Property="VerticalContentAlignment" Value="Center" />-->
+<!--            <Setter Property="Height" Value="35" />-->
+<!--            <Setter Property="SeparatorBrush" Value="DarkRed" />-->
+<!--            <Setter Property="FontWeight" Value="Black" />-->
+<!--~1~            <Setter Property="Template">@1@-->
+<!--~1~                <Setter.Value>@1@-->
+<!--~1~                    ~2~ Your Template goes here @2@@1@-->
+<!--~1~                </Setter.Value>@1@-->
+<!--~1~            </Setter>@1@-->
+<!--        </Style>-->
+        
+<!--        <Style TargetType="{x:Type DataGridCell}">-->
+<!--            <Style.Triggers>-->
+<!--                <Trigger Property="IsSelected" Value="True">-->
+<!--                    <Setter Property="Background" Value="#FF54B948"/>-->
+<!--                    <Setter Property="Foreground" Value="White"/>-->
+<!--                    <Setter Property="BorderBrush" Value="#FF3D7037"/>-->
+<!--                </Trigger>-->
+<!--            </Style.Triggers>-->
+<!--        </Style>-->
+    </UserControl.Resources>
 
 <!--    TODO Change DataGrid design. Change column templates for better data visualization. Subscribe to double click event to open files and folders.-->
     <DataGrid ColumnWidth="*"
               HeadersVisibility="Column"
               IsReadOnly="True"
+              GridLinesVisibility="None"
+              AutoGenerateColumns="False"
               ItemsSource="{Binding Content}" >
         
+        <DataGrid.Columns>
+            <DataGridTextColumn Header="Name"
+                                Binding="{Binding Name}"/>
+            <DataGridTextColumn Header="Last Modified"
+                                Binding="{Binding ChangedDate, Converter={x:Static converters:DateTimeToStringConverter.Instance}}"/>
+            <DataGridTextColumn Header="Extension"
+                                Binding="{Binding Extension}"/>
+            <DataGridTextColumn Header="Size"
+                                Binding="{Binding Size, Converter={x:Static converters:SizeToStringConverter.Instance}}"/>
+        </DataGrid.Columns>
     </DataGrid>
-
 </UserControl>

@@ -31,3 +31,4 @@ Serialization.
 Cool green-styled UI.
 Use FileInfo class instead of custom Models? Probably would be too bulky for few properties, and INPC implementation is required anyway.
 A LOT MORE...
+(And there are few more TODOs in code, which you can explore using R# To-do Explorer)

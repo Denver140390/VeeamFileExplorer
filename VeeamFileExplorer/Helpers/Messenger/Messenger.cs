@@ -570,7 +570,6 @@ namespace VeeamFileExplorer.Helpers.Messenger
 #if SILVERLIGHT
                 Deployment.Current.Dispatcher.BeginInvoke(cleanupAction);
 #elif XAMARIN
-                // TODO ANDROID How to dispatch in order to use lower priority
                 cleanupAction();
 #elif PORTABLE
                 if (_context != null)
