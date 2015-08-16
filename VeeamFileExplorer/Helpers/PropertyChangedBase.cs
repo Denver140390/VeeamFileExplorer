@@ -21,12 +21,9 @@ namespace VeeamFileExplorer.Helpers
 
         protected void RaisePropertyChanged(string propertyName)
         {
-            var propertyChanged = this.PropertyChanged;
+            var propertyChanged = PropertyChanged;
 
-            if (propertyChanged != null)
-            {
-                propertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
+            propertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         protected bool SetProperty<T>(ref T backingField, T value, Expression<Func<T>> propertyExpression)
@@ -36,7 +33,7 @@ namespace VeeamFileExplorer.Helpers
             if (changed)
             {
                 backingField = value;
-                this.RaisePropertyChanged(ExtractPropertyName(propertyExpression));
+                RaisePropertyChanged(ExtractPropertyName(propertyExpression));
             }
 
             return changed;
@@ -48,7 +45,7 @@ namespace VeeamFileExplorer.Helpers
 
             if (memberExp == null)
             {
-                throw new ArgumentException("Expression must be a MemberExpression.", "propertyExpression");
+                throw new ArgumentException("Expression must be a MemberExpression.", nameof(propertyExpression));
             }
 
             return memberExp.Member.Name;

@@ -92,9 +92,13 @@ namespace VeeamFileExplorer.ViewModels
 
                 var fileModel = new FileModel();
                 await Task.Run(() => CreateFileModel(filePath, fileModel));
-                var iconBitmap = Icon.ExtractAssociatedIcon(filePath).ToBitmap();
-                var iconBitmapImage = Bitmap2BitmapImage(iconBitmap);
-                fileModel.Icon = iconBitmapImage;
+                var extractedIcon = Icon.ExtractAssociatedIcon(filePath);
+                if (extractedIcon != null)
+                {
+                    var iconBitmap = extractedIcon.ToBitmap();
+                    var iconBitmapImage = Bitmap2BitmapImage(iconBitmap);
+                    fileModel.Icon = iconBitmapImage;
+                }
                 //CreateFileModelAsync(file, fileModel);
                 _content.Add(fileModel);
             }

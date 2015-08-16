@@ -35,7 +35,6 @@
         </Style>
     </UserControl.Resources>
 
-    <!--  TODO Change DataGrid design. Subscribe to double click event to open files.  -->
     <DataGrid AutoGenerateColumns="False"
               ColumnWidth="*"
               GridLinesVisibility="None"

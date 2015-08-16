@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Security.Permissions;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -19,7 +17,6 @@ namespace VeeamFileExplorer.Views
         private FoldersTreeViewModel _foldersTreeViewModel;
         private TreeViewItem _currentTreeViewItem;
         private readonly object _dummyItem = new object();
-        private Dispatcher _mainDispatcher;
 
         public FoldersTreeView()
         {
@@ -28,8 +25,6 @@ namespace VeeamFileExplorer.Views
 
         private void TreeView_OnLoaded(object sender, RoutedEventArgs e)
         {
-            _mainDispatcher = Dispatcher.CurrentDispatcher;
-
             _foldersTreeViewModel = DataContext as FoldersTreeViewModel;
             if (_foldersTreeViewModel == null) throw new Exception("Could not cast the DataContext to FoldersTreeViewModel!");
             _foldersTreeViewModel.CurrentDirectoryContent.CollectionChanged += CurrentDirectoryContent_CollectionChanged;
@@ -55,7 +50,7 @@ namespace VeeamFileExplorer.Views
             }
         }
 
-        private async void OnPathChanged(object sender, EventArgs e)
+        private void OnPathChanged(object sender, EventArgs e)
         {
             string newPath = CurrentPathViewModel.Instance.Value;
 
@@ -66,41 +61,19 @@ namespace VeeamFileExplorer.Views
             }
 
             int level = 0;
-            var oldItems = new List<TreeViewItem>();
             TreeViewItem lastItem = null;
             while (level < pathParts.Count)
             {
-                var items = this.FindTreeViewItems();
-//                await Task.Run(() =>
-//                {
-//                    while (items.Count == oldItems.Count)
-//                    {
-//                        _mainDispatcher.Invoke(() => items = this.FindTreeViewItems());
-//                    }
-//                });
-//                oldItems = items;
-                List<string> headers = items.Select(item => item.Header.ToString()).ToList();
-//                var matches = from item in items
-//                              where headers.All(header => header.Contains(pathParts[level]))
-//                              select item;
-//                var match = matches.FirstOrDefault();
-//                match.IsExpanded = true;
-//                lastItem = match;
-
                 foreach (var item in this.FindTreeViewItems())
                 {
                     string header = item.Header.ToString();
                     string pathPart = pathParts[level];
+                    //BUG There might be few folders with equal names. In this case only the first one will be opened
                     if (header.Equals(pathPart) || header.Equals(String.Concat(pathPart, "\\")))
                     {
                         item.IsExpanded = true;
                         lastItem = item;
-                        DoEvents();
-
-//                        item.UpdateLayout();
-//                        this.UpdateLayout();
-//                        await Task.Delay(50);
-
+                        DoEvents(); // wait the item to expand
                         break;
                     }
                 }
@@ -138,31 +111,7 @@ namespace VeeamFileExplorer.Views
             var loadingTask = _foldersTreeViewModel.LoadDirectoryFoldersAsync(path);
             await loadingTask;
 
-            //TODO !!! Large collections still cause lags...
-//            try
-//            {
-//                foreach (var folder in _foldersTreeViewModel.CurrentDirectoryContent)
-//                {
-//                    var subItem = new TreeViewItem
-//                    {
-//                        Header = folder.Name,
-//                        //Tag = string.Concat(directory.Path, @"\", directory.Name),
-//                        Tag = folder.FullPath,
-//                        FontWeight = FontWeights.Normal
-//                    };
-//                    if (folder.IsAccessible && folder.HasSubfolders)
-//                    {
-//                        subItem.Items.Add(_dummyItem);
-//                    }
-//                    subItem.Expanded += TreeViewItem_Expanded;
-//                    subItem.Selected += TreeViewItem_Selected;
-//                    item.Items.Add(subItem);
-//                }
-//            }
-//            catch (Exception ex)
-//            {
-//                throw new Exception(ex.Message);
-//            }
+            //BUG Large collections still cause lags...
         }
 
         private void CurrentDirectoryContent_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -174,7 +123,6 @@ namespace VeeamFileExplorer.Views
             var subItem = new TreeViewItem
             {
                 Header = folder.Name,
-                //Tag = string.Concat(directory.Path, @"\", directory.Name),
                 Tag = folder.FullPath,
                 FontWeight = FontWeights.Normal
             };
