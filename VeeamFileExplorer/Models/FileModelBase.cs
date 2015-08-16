@@ -42,8 +42,7 @@ namespace VeeamFileExplorer.Models
             get { return _extension; }
             set { SetProperty(ref _extension, value, () => Extension); }
         }
-
-        //TODO Add file or folder icons in DataGrid
+        
         public BitmapSource Icon
         {
             get { return _icon; }

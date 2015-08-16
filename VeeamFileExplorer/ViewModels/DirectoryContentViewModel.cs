@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Media.Imaging;
+using System.Windows.Threading;
 using VeeamFileExplorer.Helpers;
 using VeeamFileExplorer.Helpers.Messenger;
 using VeeamFileExplorer.Models;
@@ -92,6 +93,9 @@ namespace VeeamFileExplorer.ViewModels
 
                 var fileModel = new FileModel();
                 await Task.Run(() => CreateFileModel(filePath, fileModel));
+                var iconBitmap = Icon.ExtractAssociatedIcon(filePath).ToBitmap();
+                var iconBitmapImage = Bitmap2BitmapImage(iconBitmap);
+                fileModel.Icon = iconBitmapImage;
                 //CreateFileModelAsync(file, fileModel);
                 _content.Add(fileModel);
             }
@@ -105,25 +109,19 @@ namespace VeeamFileExplorer.ViewModels
             folder.FullPath = folderPath;
             folder.ChangedDate = File.GetLastWriteTime(folderPath);
 
-            var uri = new Uri("pack://application:,,,/Images/folder.png");
-            var source = new BitmapImage(uri);
-            folder.Icon = source;
-
             //Size = (new FileInfo(file)).Length //TODO ??? Folder size calculation
         }
 
         private void CreateFileModel(string filePath, FileModel file)
         {
             var fileInfo = new FileInfo(filePath);
-            var iconBitmap = Icon.ExtractAssociatedIcon(filePath).ToBitmap();
-            var iconBitmapImage = Bitmap2BitmapImage(iconBitmap);
 
             file.Name = filePath.Substring(filePath.LastIndexOf("\\", StringComparison.Ordinal) + 1);
             file.FullPath = filePath;
             file.ChangedDate = File.GetLastWriteTime(filePath);
             file.Size = fileInfo.Length;
             file.Extension = fileInfo.Extension;
-            file.Icon = iconBitmapImage;
+            //file.Icon = iconBitmapImage;
         }
 
         [DllImport("gdi32.dll")]

@@ -34,27 +34,38 @@
     <!--  TODO Change DataGrid design. Subscribe to double click event to open files and folders.  -->
     <DataGrid AutoGenerateColumns="False"
               ColumnWidth="*"
-              RowHeight="20"
               GridLinesVisibility="None"
               HeadersVisibility="Column"
               IsReadOnly="True"
-              ItemsSource="{Binding Content}">
+              ItemsSource="{Binding Content}"
+              RowHeight="20">
 
         <DataGrid.Columns>
-            <DataGridTemplateColumn Width="30" IsReadOnly="True" CanUserResize="False">
+            <DataGridTemplateColumn Width="30"
+                                    CanUserResize="False"
+                                    CanUserReorder="False"
+                                    IsReadOnly="True">
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
-                        <Image Source="pack://application:,,,/Images/folder.png" />
+<!--                        <Image Source="pack://application:,,,/Images/folder.png" />-->
+                        <Image Source="{Binding Icon}"/>
                     </DataTemplate>
                 </DataGridTemplateColumn.CellTemplate>
             </DataGridTemplateColumn>
             <DataGridTextColumn Width="250"
-                                Binding="{Binding Name}" Header="Name" />
+                                Binding="{Binding Name}"
+                                Header="Name" />
             <DataGridTextColumn Width="150"
-                                Binding="{Binding ChangedDate, Converter={x:Static converters:DateTimeToStringConverter.Instance}}" Header="Last Modified" />
+                                Binding="{Binding ChangedDate,
+                                                  Converter={x:Static converters:DateTimeToStringConverter.Instance}}"
+                                Header="Last Modified" />
             <DataGridTextColumn Width="75"
-                                Binding="{Binding Extension}" Header="Extension" />
-            <DataGridTextColumn Binding="{Binding Size, Converter={x:Static converters:SizeToStringConverter.Instance}}" Header="Size" />
+                                Binding="{Binding Extension}"
+                                Header="Extension" />
+            <DataGridTextColumn Width="75"
+                                Binding="{Binding Size,
+                                                  Converter={x:Static converters:SizeToStringConverter.Instance}}"
+                                Header="Size" />
         </DataGrid.Columns>
     </DataGrid>
 </UserControl>

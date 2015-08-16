@@ -4,7 +4,6 @@ using VeeamFileExplorer.Helpers;
 
 namespace VeeamFileExplorer.ViewModels
 {
-    //TODO Allow input
     class CurrentPathViewModel : PropertyChangedBase
     {
         private string _value;
