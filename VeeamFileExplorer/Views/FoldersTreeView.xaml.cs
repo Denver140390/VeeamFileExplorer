@@ -74,6 +74,7 @@ namespace VeeamFileExplorer.Views
                         item.IsExpanded = true;
                         lastItem = item;
                         DoEvents(); // wait the item to expand
+                        //BUG DoEvents() does not always help, it seems...
                         break;
                     }
                 }
