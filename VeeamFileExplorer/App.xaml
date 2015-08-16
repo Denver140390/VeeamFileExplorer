@@ -1,9 +1,9 @@
 ﻿<Application x:Class="VeeamFileExplorer.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:VeeamFileExplorer"
+             xmlns:viewModels="clr-namespace:VeeamFileExplorer.ViewModels"
+             xmlns:views="clr-namespace:VeeamFileExplorer.Views"
              StartupUri="../Views/MainView.xaml">
     <Application.Resources>
-         
     </Application.Resources>
 </Application>

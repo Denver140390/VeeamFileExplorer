@@ -8,7 +8,7 @@ using VeeamFileExplorer.Models;
 
 namespace VeeamFileExplorer.ViewModels
 {
-    //TODO ??? Add async check to see if there are new drives or folders?
+    //TODO Use FileSystemWatcher detecting file system changes
     class FoldersTreeViewModel : PropertyChangedBase
     {
         public ObservableCollection<FolderModel> CurrentDirectoryContent { get; }
@@ -16,6 +16,24 @@ namespace VeeamFileExplorer.ViewModels
         public FoldersTreeViewModel()
         {
             CurrentDirectoryContent = new ObservableCollection<FolderModel>();
+            var fileSystemWatcher = new FileSystemWatcher("D:\\");
+            fileSystemWatcher.EnableRaisingEvents = true;
+            fileSystemWatcher.Changed += (sender, args) =>
+            {
+
+            };
+            fileSystemWatcher.Created += (sender, args) =>
+            {
+
+            };
+            fileSystemWatcher.Deleted += (sender, args) =>
+            {
+
+            };
+            fileSystemWatcher.Renamed += (sender, args) =>
+            {
+
+            };
         }
 
         public void LoadLogicalDrives()

@@ -68,13 +68,13 @@ namespace VeeamFileExplorer.Views
                 {
                     string header = item.Header.ToString();
                     string pathPart = pathParts[level];
-                    //BUG There might be few folders with equal names. In this case only the first one will be opened
+                    //BUG There might be few folders with equal names. In that case only the first one will be opened
                     if (header.Equals(pathPart) || header.Equals(String.Concat(pathPart, "\\")))
                     {
                         item.IsExpanded = true;
                         lastItem = item;
                         DoEvents(); // wait the item to expand
-                        //BUG DoEvents() does not always help, it seems...
+                        DoEvents(); // calling it twice does the job for some reason...
                         break;
                     }
                 }
@@ -85,7 +85,7 @@ namespace VeeamFileExplorer.Views
         }
 
         [SecurityPermission(SecurityAction.Demand, Flags = SecurityPermissionFlag.UnmanagedCode)]
-        public void DoEvents()
+        private void DoEvents()
         {
             DispatcherFrame frame = new DispatcherFrame();
             Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Background,
@@ -93,7 +93,7 @@ namespace VeeamFileExplorer.Views
             Dispatcher.PushFrame(frame);
         }
 
-        public object ExitFrame(object f)
+        private object ExitFrame(object f)
         {
             ((DispatcherFrame)f).Continue = false;
 
@@ -102,6 +102,7 @@ namespace VeeamFileExplorer.Views
 
         private async void TreeViewItem_Expanded(object sender, RoutedEventArgs e)
         {
+            //TODO Unload items if Expanded == false
             var item = (TreeViewItem)sender;
             if (!item.IsExpanded) return; // we want to perform only with expanded one
             var path = item.Tag.ToString();

@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows;
@@ -112,7 +113,20 @@ namespace VeeamFileExplorer.ViewModels
             folder.FullPath = folderPath;
             folder.ChangedDate = File.GetLastWriteTime(folderPath);
 
-            //Size = (new FileInfo(file)).Length //TODO ??? Folder size calculation
+            //folder.Size = GetFolderSize(new DirectoryInfo(folder.FullPath)); //TODO ??? Folder size calculation
+        }
+
+        private static long GetFolderSize(DirectoryInfo directoryInfo)
+        {
+            // Add file sizes
+            var filesInfo = directoryInfo.GetFiles();
+            long size = filesInfo.Sum(fileInfo => fileInfo.Length);
+
+            // Add subdirectory sizes
+            var directoriesInfo = directoryInfo.GetDirectories();
+            size += directoriesInfo.Sum(subDirectoryInfo => GetFolderSize(subDirectoryInfo));
+
+            return (size);
         }
 
         private void CreateFileModel(string filePath, FileModel file)
