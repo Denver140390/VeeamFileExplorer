@@ -26,7 +26,6 @@ Folders and Files are loading asyncronously on TreeView item selection or expand
 Add comments in the code.
 Improve variables and classes namings. Folder, Directory... Quite messy.
 Interactive DirectoryContentView - open folders and files, copy, paste and other usual Windows Explorer features.
-Address Bar - allow input.
 Multiple ContentViews - for comparison.
 Navigation Buttons - backward and forward actions.
 Asynchronous Loading - load as much info as possible asynchronously (load subfolders aswell to improve UX). Without affecting too much RAM tho.

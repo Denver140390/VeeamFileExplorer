@@ -29,9 +29,13 @@
         <!--                </Trigger>-->
         <!--            </Style.Triggers>-->
         <!--        </Style>-->
+        
+        <Style TargetType="{x:Type DataGridRow}">
+            <EventSetter Event="MouseDoubleClick" Handler="DataGridRow_MouseDoubleClick"></EventSetter>
+        </Style>
     </UserControl.Resources>
 
-    <!--  TODO Change DataGrid design. Subscribe to double click event to open files and folders.  -->
+    <!--  TODO Change DataGrid design. Subscribe to double click event to open files.  -->
     <DataGrid AutoGenerateColumns="False"
               ColumnWidth="*"
               GridLinesVisibility="None"
