@@ -3,10 +3,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:converters="clr-namespace:VeeamFileExplorer.Converters"
              xmlns:viewModels="clr-namespace:VeeamFileExplorer.ViewModels">
-    <UserControl.DataContext>
-        <viewModels:DirectoryContentViewModel />
-    </UserControl.DataContext>
 
+    <UserControl.DataContext>
+        <viewModels:DirectoryContentViewModel/>
+    </UserControl.DataContext>
+    
     <UserControl.Resources>
         <!--        <Style TargetType="{x:Type DataGridColumnHeader}">-->
         <!--            <Setter Property="VerticalContentAlignment" Value="Center" />-->

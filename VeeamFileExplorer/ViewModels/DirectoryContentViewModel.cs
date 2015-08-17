@@ -116,6 +116,18 @@ namespace VeeamFileExplorer.ViewModels
             //folder.Size = GetFolderSize(new DirectoryInfo(folder.FullPath)); //TODO ??? Folder size calculation
         }
 
+        private void CreateFileModel(string filePath, FileModel file)
+        {
+            var fileInfo = new FileInfo(filePath);
+
+            file.Name = filePath.Substring(filePath.LastIndexOf("\\", StringComparison.Ordinal) + 1);
+            file.FullPath = filePath;
+            file.ChangedDate = File.GetLastWriteTime(filePath);
+            file.Size = fileInfo.Length;
+            file.Extension = fileInfo.Extension;
+            //file.Icon = iconBitmapImage;
+        }
+
         private static long GetFolderSize(DirectoryInfo directoryInfo)
         {
             // Add file sizes
@@ -127,18 +139,6 @@ namespace VeeamFileExplorer.ViewModels
             size += directoriesInfo.Sum(subDirectoryInfo => GetFolderSize(subDirectoryInfo));
 
             return (size);
-        }
-
-        private void CreateFileModel(string filePath, FileModel file)
-        {
-            var fileInfo = new FileInfo(filePath);
-
-            file.Name = filePath.Substring(filePath.LastIndexOf("\\", StringComparison.Ordinal) + 1);
-            file.FullPath = filePath;
-            file.ChangedDate = File.GetLastWriteTime(filePath);
-            file.Size = fileInfo.Length;
-            file.Extension = fileInfo.Extension;
-            //file.Icon = iconBitmapImage;
         }
 
         [DllImport("gdi32.dll")]

@@ -1,12 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
-using System.Security.Permissions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Threading;
 using VeeamFileExplorer.Helpers;
 using VeeamFileExplorer.ViewModels;
 
@@ -14,20 +12,20 @@ namespace VeeamFileExplorer.Views
 {
     public partial class FoldersTreeView : UserControl
     {
-        private FoldersTreeViewModel _foldersTreeViewModel;
+        private readonly FoldersTreeViewModel _foldersTreeViewModel;
         private TreeViewItem _currentTreeViewItem;
         private readonly object _dummyItem = new object();
 
         public FoldersTreeView()
         {
             InitializeComponent();
+
+            _foldersTreeViewModel = (FoldersTreeViewModel) DataContext;
+            _foldersTreeViewModel.CurrentDirectoryContent.CollectionChanged += CurrentDirectoryContent_CollectionChanged;
         }
 
         private void TreeView_OnLoaded(object sender, RoutedEventArgs e)
         {
-            _foldersTreeViewModel = DataContext as FoldersTreeViewModel;
-            if (_foldersTreeViewModel == null) throw new Exception("Could not cast the DataContext to FoldersTreeViewModel!");
-            _foldersTreeViewModel.CurrentDirectoryContent.CollectionChanged += CurrentDirectoryContent_CollectionChanged;
             CurrentPathViewModel.Instance.OnPathChangedEvent += OnPathChanged;
             _foldersTreeViewModel.LoadLogicalDrives();
 
@@ -36,8 +34,7 @@ namespace VeeamFileExplorer.Views
                 var item = new TreeViewItem
                 {
                     Header = directory.Name,
-                    Tag = directory.Name,
-                    FontWeight = FontWeights.Normal
+                    Tag = directory.FullPath
                 };
                 if (directory.IsAccessible && directory.HasSubfolders)
                 {
@@ -60,6 +57,11 @@ namespace VeeamFileExplorer.Views
                 pathParts.RemoveAt(pathParts.Count - 1);
             }
 
+            OpenFolder(pathParts);
+        }
+
+        private void OpenFolder(List<string> pathParts)
+        {
             int level = 0;
             TreeViewItem lastItem = null;
             while (level < pathParts.Count)
@@ -73,8 +75,8 @@ namespace VeeamFileExplorer.Views
                     {
                         item.IsExpanded = true;
                         lastItem = item;
-                        DoEvents(); // wait the item to expand
-                        DoEvents(); // calling it twice does the job for some reason...
+                        Application.Current.DoEvents(); // wait the item to expand
+                        Application.Current.DoEvents(); // TODO Calling DoEvents() twice does the job for some reason... Or not...
                         break;
                     }
                 }
@@ -82,22 +84,6 @@ namespace VeeamFileExplorer.Views
             }
             if (lastItem != null)
                 lastItem.IsSelected = true;
-        }
-
-        [SecurityPermission(SecurityAction.Demand, Flags = SecurityPermissionFlag.UnmanagedCode)]
-        private void DoEvents()
-        {
-            DispatcherFrame frame = new DispatcherFrame();
-            Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Background,
-                new DispatcherOperationCallback(ExitFrame), frame);
-            Dispatcher.PushFrame(frame);
-        }
-
-        private object ExitFrame(object f)
-        {
-            ((DispatcherFrame)f).Continue = false;
-
-            return null;
         }
 
         private async void TreeViewItem_Expanded(object sender, RoutedEventArgs e)
@@ -125,8 +111,7 @@ namespace VeeamFileExplorer.Views
             var subItem = new TreeViewItem
             {
                 Header = folder.Name,
-                Tag = folder.FullPath,
-                FontWeight = FontWeights.Normal
+                Tag = folder.FullPath
             };
             if (folder.IsAccessible && folder.HasSubfolders)
             {
@@ -155,21 +140,11 @@ namespace VeeamFileExplorer.Views
 
         private void TreeView_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
-            var treeViewItem = VisualUpwardSearch(e.OriginalSource as DependencyObject);
+            var treeViewItem = this.VisualUpwardSearch(e.OriginalSource as DependencyObject);
 
-            if (treeViewItem != null)
-            {
-                treeViewItem.Focus();
-                e.Handled = true;
-            }
-        }
-
-        private static TreeViewItem VisualUpwardSearch(DependencyObject source)
-        {
-            while (source != null && !(source is TreeViewItem))
-                source = VisualTreeHelper.GetParent(source);
-
-            return source as TreeViewItem;
+            if (treeViewItem == null) return;
+            treeViewItem.Focus();
+            e.Handled = true;
         }
 
         private void ContextMenuItem_Click(object sender, RoutedEventArgs e)

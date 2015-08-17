@@ -1,7 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Security.Permissions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Threading;
+using VeeamFileExplorer.Views;
 
 namespace VeeamFileExplorer.Helpers
 {
@@ -37,6 +40,29 @@ namespace VeeamFileExplorer.Helpers
                 }
             }
             return result;
+        }
+
+        public static TreeViewItem VisualUpwardSearch(this FoldersTreeView treeView, DependencyObject source)
+        {
+            while (source != null && !(source is TreeViewItem))
+                source = VisualTreeHelper.GetParent(source);
+
+            return source as TreeViewItem;
+        }
+
+        [SecurityPermission(SecurityAction.Demand, Flags = SecurityPermissionFlag.UnmanagedCode)]
+        public static void DoEvents(this Application app)
+        {
+            var frame = new DispatcherFrame();
+            Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Background,
+                new DispatcherOperationCallback(ExitFrame), frame);
+            Dispatcher.PushFrame(frame);
+        }
+
+        private static object ExitFrame(object f)
+        {
+            ((DispatcherFrame)f).Continue = false;
+            return null;
         }
     }
 }

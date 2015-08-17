@@ -5,9 +5,9 @@
              xmlns:viewModels="clr-namespace:VeeamFileExplorer.ViewModels">
 
     <UserControl.DataContext>
-        <viewModels:FoldersTreeViewModel />
+        <viewModels:FoldersTreeViewModel/>
     </UserControl.DataContext>
-   
+    
     <UserControl.Resources>
         <Style TargetType="{x:Type TreeViewItem}">
             <Setter Property="HeaderTemplate">

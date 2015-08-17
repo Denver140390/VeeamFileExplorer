@@ -8,7 +8,6 @@ using VeeamFileExplorer.Models;
 
 namespace VeeamFileExplorer.ViewModels
 {
-    //TODO Use FileSystemWatcher detecting file system changes
     class FoldersTreeViewModel : PropertyChangedBase
     {
         public ObservableCollection<FolderModel> CurrentDirectoryContent { get; }
@@ -18,6 +17,7 @@ namespace VeeamFileExplorer.ViewModels
             CurrentDirectoryContent = new ObservableCollection<FolderModel>();
             var fileSystemWatcher = new FileSystemWatcher("D:\\");
             fileSystemWatcher.EnableRaisingEvents = true;
+            //TODO Use FileSystemWatcher for detecting file system changes
             fileSystemWatcher.Changed += (sender, args) =>
             {
 
@@ -73,8 +73,9 @@ namespace VeeamFileExplorer.ViewModels
                 directories = new string[0];
                 //throw new Exception(e.Message);
             }
-
+            
             CurrentDirectoryContent.Clear();
+            int foldersCount = 0;
             foreach (string folderPath in directories)
             {
                 var folder = new FolderModel();
@@ -82,6 +83,11 @@ namespace VeeamFileExplorer.ViewModels
                 await Task.Run(() => CreateFolderModel(folderPath, folder));
                 //CreateFolderModel(folderPath, folder);
                 CurrentDirectoryContent.Add(folder);
+                foldersCount++;
+//                if (foldersCount % 100 == 0)
+//                {
+//                    await Task.Delay(10); // give time for UI to response
+//                }
             }
         }
 
